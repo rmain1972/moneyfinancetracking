@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Money Finance Tracker -- Recover Account</title>
+<link href="./css/desktop/layout.css" rel="stylesheet" type="text/css">
+<link href="./css/mobile/layout.css" rel="stylesheet" type="text/css">
+</head>
+
+<body onLoad="getMedia();">
+    <script src="js/recover.js"></script>
+	<script src="js/debug.js"></script>
+	<h1>Money Finance Tracker -- Recover account</h1>
+    <form name="recover_form" method="post" action="process_recoverform.php">
+	<div class="register_form_grid">
+<!---------- Next Row ------------------------------------------------------------------->  
+        <p>&nbsp;</p>
+        <p>
+        Please enter your email address to recover your account.  We will send you an email with instructions on how to recover your account.
+        </p>
+        <div>
+        &nbsp;
+        </div>
+<!---------- Next Row ------------------------------------------------------------------->
+        <p>&nbsp;</p>
+        <p>
+        &nbsp;
+        </p>
+        <div>
+        &nbsp;
+        </div>
+<!---------- Next Row ------------------------------------------------------------------->
+        <div>
+            <p>Enter email:</p>
+        </div>
+        <div>
+            <input class="inputform" name="email" type="email">
+            <p id="email_error" class="error">You must enter a username!</p>
+        </div>
+        <div>
+        &nbsp;
+        </div>
+<!---------- Next Row ------------------------------------------------------------------->
+        <p>&nbsp;</p>
+        <p>
+        &nbsp;
+        </p>
+        <div>
+        &nbsp;
+        </div>
+<!---------- Next Row ------------------------------------------------------------------->
+        <p>&nbsp;</p>
+        <input type="submit" onclick="return validate();">
+        <div>
+        &nbsp;
+        </div>
+<!---------- Next Row ------------------------------------------------------------------->
+        <p>&nbsp;</p>
+        <p>
+        &nbsp;
+        </p>
+        <div>
+        &nbsp;
+        </div>
+	</div>
+    </form>
+	<img class="main-image" src="images/calculator.jpg" alt="Money Finance Tracker - Register Page image of a calculator">
+	<p id="data">Data here</p>
+</body>
+</html>
