@@ -17,7 +17,7 @@ if ($dbc = mysqli_connect('localhost', $mysql_user, $mysql_password)) {
     // Select database
     if (mysqli_select_db($dbc, $userdb)) {
         
-        $query = "SELECT * FROM Categories;";
+        $query = "SELECT * FROM Categories ORDER BY Cattype_id, name;";
         $result = mysqli_query($dbc, $query);
         
         if ($result) {
