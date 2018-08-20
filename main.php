@@ -52,10 +52,10 @@ include("noheader_secure.php");
 	</div>
     <!---------- Transactions Here ---------------------------------->
 	<div id="transactions" class="overflow">
-            Something Here
+            <img class="img_center" src="images/pleasewait.gif">
 	</div>
 <!------------------------ Row 3 ------------------------------------>
-	<div>
+	<div> 
         <select id="date_controls" onchange="FilterTransactions()">
             <option value="1">All Dates</option>
             <option value="2">Last 30 Days</option>
