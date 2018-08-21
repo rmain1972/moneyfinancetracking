@@ -27,6 +27,19 @@ session_start();
 	print "<BR>Your email is $email";
     print "<BR>Your pwhash is $pwhash";
             
+    if (($username=="") || ($email=="")) {
+        $line = date('Y-m-d H:i:s') . " -- $_SERVER[REMOTE_ADDR] -- USERNAME/EMAIL BLANK -- $_SERVER[REQUEST_URI]";
+        file_put_contents('errors.log', $line . PHP_EOL, FILE_APPEND);
+        die("<BR><BR>Username and/or email cannot be blank!  This attempt has been recorded!");        
+    }
+            
+    // Valid Email?
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $line = date('Y-m-d H:i:s') . " -- $_SERVER[REMOTE_ADDR] -- INCORRECT EMAIL FORMAT -- $_SERVER[REQUEST_URI]";
+        file_put_contents('errors.log', $line . PHP_EOL, FILE_APPEND);
+        die("<BR><BR>Invalid email format!  This attempt has been recorded!");  
+    }
+            
 include('mysqlnfo.php');
 
     //
