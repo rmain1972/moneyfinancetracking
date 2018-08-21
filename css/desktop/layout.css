@@ -18,6 +18,13 @@ body {
 	width: 100%;
 }
 
+.img_center { 
+    display: block; 
+    margin-right: auto; 
+    margin-left: auto; 
+}
+
+
 .align_right {
     text-align: right;
 }
