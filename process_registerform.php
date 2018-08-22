@@ -41,6 +41,7 @@ session_start();
     }
             
 include('mysqlnfo.php');
+include("sqlutil.php");
 
     //
 if ($dbc = mysqli_connect('localhost', $mysql_user, $mysql_password)) {
@@ -75,6 +76,8 @@ if ($dbc = mysqli_connect('localhost', $mysql_user, $mysql_password)) {
         } else {
             print '<p style="color: red;">Could not enter data into the database due to MYSQL ERROR:' . mysqli_error($dbc) . "</p>";
         }
+        
+        
         
         /* CREATE USER DB */
         
@@ -142,73 +145,14 @@ if ($dbc = mysqli_connect('localhost', $mysql_user, $mysql_password)) {
                 if (!$result) {
                     die('<p style="color: red;">UNABLE to CREATE table (Accounts) due to MYSQL ERROR:' . mysqli_error($dbc) . "</p>");   
                 }
-            
-                $query = 'CREATE TABLE Categories (' .
-                         'cat_id INT NOT NULL AUTO_INCREMENT,' .
-                         'name VARCHAR(255) NOT NULL,' .
-                         'Cattype_id INT NOT NULL,' .
-                         'FOREIGN KEY (Cattype_id)' .
-                         'REFERENCES CatType(cattype_id)' .
-                         'ON DELETE CASCADE,' .
-                         'PRIMARY KEY ( cat_id )' .
-                         ');';
                 
-                $result = mysqli_query($dbc, $query);
-                if (!$result) {
-                    die('<p style="color: red;">UNABLE to CREATE table (Categories) due to MYSQL ERROR:' . mysqli_error($dbc) . "</p>");   
-                }
+                /* Create Categories Table */
                 
-                $query1 = 'INSERT INTO Categories (name, Cattype_id) VALUES ("Paycheck",1);';
-                $query2 = 'INSERT INTO Categories (name, Cattype_id) VALUES ("Other Income",1);';
+                $mysqli = new mysqli('localhost', $mysql_user, $mysql_password, $dbuser_db);
+                sqlImport('Categories.sql');
                 
-                $result = mysqli_query($dbc, $query1);
-                 if (!$result) {
-                    die('<p style="color: red;">UNABLE to INSERT into table (Categories-q1i) due to MYSQL ERROR:' . mysqli_error($dbc) . "</p>");   
-                }
-                
-                $result = mysqli_query($dbc, $query2);
-                 if (!$result) {
-                    die('<p style="color: red;">UNABLE to INSERT into table (Categories-q2i) due to MYSQL ERROR:' . mysqli_error($dbc) . "</p>");   
-                }
-                
-                 /* Expense Categories */
-                $query1 = 'INSERT INTO Categories (name, Cattype_id) VALUES ("Utilities",2);';
-                $query2 = 'INSERT INTO Categories (name, Cattype_id) VALUES ("Utilities:Electric",2);';
-                $query3 = 'INSERT INTO Categories (name, Cattype_id) VALUES ("Utilities:Internet",2);';
-                $query4 = 'INSERT INTO Categories (name, Cattype_id) VALUES ("Credit Card",2);';
-                $query5 = 'INSERT INTO Categories (name, Cattype_id) VALUES ("Credit Card:Capital One",2);';
-                $query6 = 'INSERT INTO Categories (name, Cattype_id) VALUES ("Miscellaneous Expense",2);';
-                
-                $result = mysqli_query($dbc, $query1);
-                 if (!$result) {
-                    die('<p style="color: red;">UNABLE to INSERT into table (Categories-q1e) due to MYSQL ERROR:' . mysqli_error($dbc) . "</p>");   
-                }
-                
-                $result = mysqli_query($dbc, $query2);
-                 if (!$result) {
-                    die('<p style="color: red;">UNABLE to INSERT into table (Categories-q2e) due to MYSQL ERROR:' . mysqli_error($dbc) . "</p>");   
-                }
-                
-                $result = mysqli_query($dbc, $query3);
-                 if (!$result) {
-                    die('<p style="color: red;">UNABLE to INSERT into table (Categories-q3d) due to MYSQL ERROR:' . mysqli_error($dbc) . "</p>");   
-                }
-                
-                $result = mysqli_query($dbc, $query4);
-                 if (!$result) {
-                    die('<p style="color: red;">UNABLE to INSERT into table (Categories-q4e) due to MYSQL ERROR:' . mysqli_error($dbc) . "</p>");   
-                }
-                
-                $result = mysqli_query($dbc, $query5);
-                 if (!$result) {
-                    die('<p style="color: red;">UNABLE to INSERT into table (Categories-q5e) due to MYSQL ERROR:' . mysqli_error($dbc) . "</p>");   
-                }
-                
-                $result = mysqli_query($dbc, $query6);
-                 if (!$result) {
-                    die('<p style="color: red;">UNABLE to INSERT into table (Categories-q6e) due to MYSQL ERROR:' . mysqli_error($dbc) . "</p>");   
-                }
-				
+                /* UtilityTableVar */
+        
 				$query = 'CREATE TABLE UtilityTableVar (' .
 	                     'util_id INT NOT NULL AUTO_INCREMENT,' .
 	                     'tbluser_num INT NOT NULL,' .
