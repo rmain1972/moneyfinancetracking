@@ -13,7 +13,8 @@ if (session_status()==1) {
 </head>
 
 <?php
-include("noheader_secure.php");    
+include("noheader_secure.php");
+include("utility.php");
 ?>
 <body onload="loadtrans(<?php echo $default_account; ?>)">
 <script src="js/main.js"></script>
@@ -60,6 +61,8 @@ include("noheader_secure.php");
             <option value="1">All Dates</option>
             <option value="2">Last 30 Days</option>
         </select>
+        <br>
+        <p2>Last Login: <?php echo $_SESSION["last_logon"]; ?></p2>
 	</div>
 	<div class="main_button_grid solid_box">
 	<p class="buttom_item" onclick="add_transaction()">Add Transaction</p>

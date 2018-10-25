@@ -15,14 +15,13 @@ session_start();
     $password = htmlentities($_POST["userpassword"]);
     
 include('mysqlnfo.php');
-
     //
 if ($dbc = mysqli_connect('localhost', $mysql_user, $mysql_password)) {
     $username = mysqli_real_escape_string($dbc, $username);
     $password = mysqli_real_escape_string($dbc, $password);
     // Select database
     if (mysqli_select_db($dbc, 'MFT_DB')) {
-        $query = "SELECT password, database_name, change_pw FROM Users WHERE username='$username';";
+        $query = "SELECT password, database_name, change_pw, last_logon FROM Users WHERE username='$username';";
         $result = mysqli_query($dbc, $query); 
                 
         if ($result) {
@@ -38,6 +37,15 @@ if ($dbc = mysqli_connect('localhost', $mysql_user, $mysql_password)) {
                     $_SESSION["loggin_status"] = 1;
                     $_SESSION["user_database"] = $row[1];
                     $_SESSION["default_account"] = 1;
+                    
+                    $time = strtotime($row[3]);
+                    $_SESSION["last_logon"] = date("m/d/y g:i A", $time);
+                    $now = date('Y-m-d H:i:s');
+                    $query = "UPDATE Users SET last_logon='$now' WHERE username='$username'";
+                    $result = mysqli_query($dbc, $query);
+                    if (!$result) {
+                        die('<p style="color: red;">UPDATE did not run (last_logon) due to MYSQL ERROR:' . mysqli_error($dbc) . "</p>");
+                    }
                     header("Location: main.php");    
                 }   
                    

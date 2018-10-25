@@ -29,6 +29,33 @@ function getuserdb() {
 }
 }
 
+function getuser_last_logon() {
+	$username = $_SESSION['username'];
+	
+    include("mysqlnfo.php");
+    
+	if ($dbc = mysqli_connect('localhost', $mysql_user, $mysql_password)) {
+    // Select database
+        if (mysqli_select_db($dbc,"MFT_DB" )) {
+		  $query = "SELECT last_logon FROM Users WHERE username='$username';";
+            $result = mysqli_query($dbc, $query);
+		  $ll = "";
+                
+            if ($result) {
+                $row = mysqli_fetch_row($result);
+                $ll = $row[0];
+		  }
+		  mysqli_close($dbc);
+            
+        $time = strtotime($ll);
+        return date("m/d/y g:i A", $time);
+            
+        }    
+    }
+}
+
+
+
 function createusertable() {
     include("mysqlnfo.php");
 	$usertable = "trans_T";
