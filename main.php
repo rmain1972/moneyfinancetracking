@@ -60,7 +60,7 @@ include("utility.php");
 	<div> 
         <select id="date_controls" onchange='FilterTransactions()'>
             <option value="1">All Dates</option>
-            <option value="2">Last 30 Days</option>
+            <option value="2" <?php if ($default_mode==2) { echo "selected"; } ?>>Last 30 Days</option>
             <option value="3">Last 60 Days</option>
             <option value="4">Last 90 Days</option>
         </select>
