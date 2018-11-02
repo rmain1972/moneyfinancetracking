@@ -9,12 +9,14 @@ if (!isset($_SESSION['loggin_status'])) {
     $_SESSION["username"]="";
     $_SESSION['user_database']="";
     $_SESSION["default_account"] = "";
+    $_SESSION["default_mode"] = "";
 } 
 
 $loggedin = $_SESSION['loggin_status'];
 $username = $_SESSION['username'];
 $userdb = $_SESSION['user_database'];
 $default_account = $_SESSION["default_account"];
+$default_mode = $_SESSION["default_mode"];
     
 ?>
 

@@ -14,7 +14,9 @@ session_start();
 	$username = htmlentities($_POST["username"]);
     $password = htmlentities($_POST["userpassword"]);
     
+require_once("Mobile_Detect.php");
 include('mysqlnfo.php');
+
     //
 if ($dbc = mysqli_connect('localhost', $mysql_user, $mysql_password)) {
     $username = mysqli_real_escape_string($dbc, $username);
@@ -38,6 +40,15 @@ if ($dbc = mysqli_connect('localhost', $mysql_user, $mysql_password)) {
                     $_SESSION["user_database"] = $row[1];
                     $_SESSION["default_account"] = 1;
                     
+                    $detect = new Mobile_Detect;
+ 
+                    // Any mobile device (phones or tablets).
+                    if ( $detect->isMobile() ) {
+                        $_SESSION["default_mode"] = 2;
+                    } else {
+                        $_SESSION["default_mode"] = 1;  
+                    }
+                                    
                     $time = strtotime($row[3]);
                     $_SESSION["last_logon"] = date("m/d/y g:i A", $time);
                     $now = date('Y-m-d H:i:s');

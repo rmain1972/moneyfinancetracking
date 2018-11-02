@@ -29,7 +29,7 @@ if ($dbc = mysqli_connect('localhost', $mysql_user, $mysql_password)) {
                     if ($default_account==$row[0]) {
                         $buildstr = $buildstr . " selected";
                     }
-                    $buildstr = $buildstr . "' onclick='loadtrans($row[0])'>$row[1]</p>";    
+                    $buildstr = $buildstr . "' onclick='loadtrans($row[0]), $default_mode'>$row[1]</p>";    
                 }
         }
         print $buildstr;
