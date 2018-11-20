@@ -48,9 +48,9 @@ include("utility.php");
 	</div>
 	</div>
 <!------------------------ Row 2 ------------------------------------>
-	<div id="accounts" class="solid_box">
-	<p class="button_item" id="account-1" class="account_item <?php if ($default_account==1) { echo "selected"; } ?>" onclick="loadtrans(1)">Main Account</p>
-    <p class="button_itme" id="account-2" class="account_item <?php if ($default_account==1) { echo "selected"; } ?>" onclick="loadtrans(2)">2nd Account</p>
+	<div id="accounts" class="solid_box account_grid">
+	<p  id="account-1" class="account_item <?php if ($default_account==1) { echo "selected"; } ?>" onclick="loadtrans(1)">Main Account</p>
+    <p  id="account-2" class="account_item <?php if ($default_account==1) { echo "selected"; } ?>" onclick="loadtrans(2)">2nd Account</p>
 	</div>
     <!---------- Transactions Here ---------------------------------->
 	<div id="transactions" class="overflow">

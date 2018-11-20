@@ -94,6 +94,12 @@ h2 {
     background-color: var(--selected_bg_color);
 }
 
+.account_grid {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 50% 50%;
+}
+
 .main_button_grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;

@@ -340,6 +340,10 @@ function load_reconcile_values() {
             var credits_text = data.credits_text;
             var computed_balance = data.computed_balance;
             
+            alert("BEGIN_DATE:" + statement_begin_date + ", BEGIN_BALANCE: " + beginning_balance +
+                  ", END_BALACE:" + ending_balance + ", DEBIT_TEXT: " + debits_text + ", CREDITS_TEXT:" +
+                  credits_text + ", COMPUTE_BAL:" + computed_balance);
+            
             document.forms["reconcile_form"].statement_begin_date.value = statement_begin_date;
             document.forms["reconcile_form"].beginning_balance.value = beginning_balance;
             document.forms["reconcile_form"].ending_balance.value = ending_balance;
