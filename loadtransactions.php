@@ -103,7 +103,7 @@ if ($dbc = mysqli_connect('localhost', $mysql_user, $mysql_password)) {
                 				
 				//Add calc here to calculate balance
                 $balance = $row[8];
-				$buildstr = $buildstr . "<p class='tibalance'>$balance</p>";
+				$buildstr = $buildstr . "<p class='tibalance'>" . number_format((float)$balance,2,'.','') . "</p>";
 				
 				$buildstr = $buildstr . "<p id='check-$transid' class='solid_box' onclick='toggle_checkmark($transid)'>" . getReadableReconcileCode($row[6]) . "</p>";
                 $buildstr = $buildstr . "<p onclick='edit($account, $transid)'>Edit</p>";
