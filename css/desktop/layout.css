@@ -81,6 +81,12 @@ h2 {
 	grid-template-rows: 75px 500px 100px;
 }
 
+.print_grid {
+	display: grid;
+	grid-template-columns: 100%;
+	grid-template-rows: 10% 10% 1fr;
+}
+
 .transaction_item {
 	display: grid;
 	grid-template-columns: 15% 20% 10% 10% 10% 5% 1fr;

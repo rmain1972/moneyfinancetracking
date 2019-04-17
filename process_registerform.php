@@ -67,9 +67,9 @@ if ($dbc = mysqli_connect('localhost', $mysql_user, $mysql_password)) {
         } else {
             die('<p style="color: red;">Query did not run (dbuser_num) due to MYSQL ERROR:' . mysqli_error($dbc) . "</p>"); 
         }
-        
-        $query = "INSERT INTO Users (username, password, email, database_name, expire_date) VALUES
-        ('$username', '$pwhash', '$email', '$dbuser_db', '2018-03-01');";
+        $now = date('Y-m-d H:i:s');
+        $query = "INSERT INTO Users (username, password, email, database_name, expire_date, create_date) VALUES
+        ('$username', '$pwhash', '$email', '$dbuser_db', '2018-03-01', '$now');";
         
         if (mysqli_query($dbc, $query)) {
             print "<p>Data entered successfully into the database.</p>";   

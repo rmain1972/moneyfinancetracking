@@ -70,8 +70,8 @@ include("utility.php");
 	<div class="main_button_grid solid_box">
 	<p class="buttom_item" onclick="add_transaction()">Add Transaction</p>
     <p class="buttom_item" onclick="delete_account_data()">Delete Account Data</p>
-    <p class="buttom_item">Button 3</p>
-    <p class="buttom_item"><a href="accounts_setup.php">Add Account</a></p>
+    <p class="buttom_item"><a href="print.php">Print</a></p>
+    <p class="buttom_item"><a href="accounts_setup.php">Add Account</a></p></a>
     <p class="buttom_item"><a href="reconcile.php">Reconcile</a></p>
     <p class="buttom_item"><a href="logout.php">Logout</a></p>
 	</div>
