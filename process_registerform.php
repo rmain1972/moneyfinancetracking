@@ -72,7 +72,14 @@ if ($dbc = mysqli_connect('localhost', $mysql_user, $mysql_password)) {
         ('$username', '$pwhash', '$email', '$dbuser_db', '2018-03-01', '$now');";
         
         if (mysqli_query($dbc, $query)) {
-            print "<p>Data entered successfully into the database.</p>";   
+            print "<p>Data entered successfully into the database.</p>";
+            
+            $to = "rmain1972@live.com";
+            $subject = "User Added";
+            $txt = "Details:\r\n" . "Username:$username\r\n" . "Email: $email on $now";
+            $headers = "From: webmaster@moneyfinancetracking.com" . "\r\n";
+            mail($to,$subject,$txt,$headers);
+
         } else {
             print '<p style="color: red;">Could not enter data into the database due to MYSQL ERROR:' . mysqli_error($dbc) . "</p>";
         }
