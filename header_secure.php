@@ -31,6 +31,8 @@ if ($loggedin == 0) {
     print '<o><a href="./login.html">Login</a></p>';
 } else {
     print '<p><a href="./logout.php">Logout</a><BR>You are logged in as <strong>' . $username . '</strong></p>';
+    print '<BR>';
+    print '<p2>Last Login:' . $_SESSION['last_logon'] .  '</p2>';
 }
             
 ?>

@@ -65,6 +65,20 @@ h2 {
     color: red;
 }
 
+.menu_grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.menu_option {  
+    border: 1px solid black;
+    margin-top: 300px;
+    margin-bottom: 300px;
+    margin-right: 350px;
+    margin-left: 350px;
+    background-color: lightblue;
+}
+
 .accountsetup_form_grid {
     display: grid;
 	grid-template-columns: 20% 40% auto;

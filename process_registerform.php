@@ -25,7 +25,6 @@ session_start();
 	
 	print "Your username is $username";
 	print "<BR>Your email is $email";
-    print "<BR>Your pwhash is $pwhash";
             
     if (($username=="") || ($email=="")) {
         $line = date('Y-m-d H:i:s') . " -- $_SERVER[REMOTE_ADDR] -- USERNAME/EMAIL BLANK -- $_SERVER[REQUEST_URI]";
@@ -68,8 +67,10 @@ if ($dbc = mysqli_connect('localhost', $mysql_user, $mysql_password)) {
             die('<p style="color: red;">Query did not run (dbuser_num) due to MYSQL ERROR:' . mysqli_error($dbc) . "</p>"); 
         }
         $now = date('Y-m-d H:i:s');
+        $nows = strtotime($now);
+        $expire = date('Y-m-d H:i:s', strtotime('+7 days', $nows));
         $query = "INSERT INTO Users (username, password, email, database_name, expire_date, create_date) VALUES
-        ('$username', '$pwhash', '$email', '$dbuser_db', '2018-03-01', '$now');";
+        ('$username', '$pwhash', '$email', '$dbuser_db', '$expire', '$now');";
         
         if (mysqli_query($dbc, $query)) {
             print "<p>Data entered successfully into the database.</p>";

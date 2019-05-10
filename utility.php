@@ -24,6 +24,26 @@ function my_assert_handler($file, $line, $code, $desc = null)
 // Set up the callback
 assert_options(ASSERT_CALLBACK, 'my_assert_handler');
 
+/*
+
+Source for this function was taken from
+https://iwantsourcecodes.com/random-password-generator-in-php-source-code/
+
+*/
+
+function randCode($length = 5) {
+$ranges = array(range('a', 'z'), range('A', 'Z'), range(0, 9));
+$code = '';
+    for($i = 0; $i < $length; $i++){
+        $rkey = array_rand($ranges);
+        $vkey = array_rand($ranges[$rkey]);
+        $code .= $ranges[$rkey][$vkey];
+    }
+    
+return $code;
+    
+}
+
 
 function getuserdb() {
 	$username = $_SESSION['username'];

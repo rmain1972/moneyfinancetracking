@@ -23,7 +23,7 @@ if ($dbc = mysqli_connect('localhost', $mysql_user, $mysql_password)) {
     $password = mysqli_real_escape_string($dbc, $password);
     // Select database
     if (mysqli_select_db($dbc, 'MFT_DB')) {
-        $query = "SELECT password, database_name, change_pw, last_logon FROM Users WHERE username='$username';";
+        $query = "SELECT password, database_name, change_pw, last_logon, expire_date FROM Users WHERE username='$username';";
         $result = mysqli_query($dbc, $query); 
                 
         if ($result) {
@@ -34,30 +34,40 @@ if ($dbc = mysqli_connect('localhost', $mysql_user, $mysql_password)) {
                     $_SESSION["loggin_status"] = "0";
                     header("Location: change_password.php?username=$username");
                 } else {
-                    // Set session variables
-                    $_SESSION["username"] = $username;
-                    $_SESSION["loggin_status"] = 1;
-                    $_SESSION["user_database"] = $row[1];
-                    $_SESSION["default_account"] = 1;
-                    
-                    $detect = new Mobile_Detect;
- 
-                    // Any mobile device (phones or tablets).
-                    if ( $detect->isMobile() ) {
-                        $_SESSION["default_mode"] = 2;
-                    } else {
-                        $_SESSION["default_mode"] = 1;  
-                    }
-                                    
-                    $time = strtotime($row[3]);
-                    $_SESSION["last_logon"] = date("m/d/y g:i A", $time);
+                    // Check expire date
                     $now = date('Y-m-d H:i:s');
-                    $query = "UPDATE Users SET last_logon='$now' WHERE username='$username'";
-                    $result = mysqli_query($dbc, $query);
-                    if (!$result) {
-                        die('<p style="color: red;">UPDATE did not run (last_logon) due to MYSQL ERROR:' . mysqli_error($dbc) . "</p>");
-                    }
-                    header("Location: main.php");    
+                    $nows = strtotime($now);
+                    $expires = strtotime($row[4]);
+                    
+                    if ($expires > $nows) {
+                        // Set session variables
+                        $_SESSION["username"] = $username;
+                        $_SESSION["loggin_status"] = 1;
+                        $_SESSION["user_database"] = $row[1];
+                        $_SESSION["default_account"] = 1;
+                    
+                        $detect = new Mobile_Detect;
+ 
+                        // Any mobile device (phones or tablets).
+                        if ( $detect->isMobile() ) {
+                            $_SESSION["default_mode"] = 2;
+                        } else {
+                            $_SESSION["default_mode"] = 1;  
+                        }
+                                    
+                        $time = strtotime($row[3]);
+                        $_SESSION["last_logon"] = date("m/d/y g:i A", $time);
+                        $now = date('Y-m-d H:i:s');
+                        $updated_expire = date('Y-m-d H:i:s', strtotime('+365 days', $nows));
+                        $query = "UPDATE Users SET last_logon='$now', expire_date='$updated_expire' WHERE username='$username'";
+                        $result = mysqli_query($dbc, $query);
+                        if (!$result) {
+                            die('<p style="color: red;">UPDATE did not run (last_logon, expire_date) due to MYSQL ERROR:' . mysqli_error($dbc) . "</p>");
+                        } 
+                        header("Location: menu.php");    
+                    } else {
+                        header("Location: expired.php");    
+                    }    
                 }   
                    
             } else {
