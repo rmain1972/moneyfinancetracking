@@ -11,11 +11,19 @@ include("utility.php");
 $account = $_GET['account'];
 $_SESSION["default_account"]=$account;
 
+$transmode = $_GET['mode'];
+assert(($trandmode === NULL),"transmode is NULL!");
+$_SESSION["default_mode"]=$transmode;
+
 try {
+    // For Now -- Should be run when add/delete/edit transaction
+    updatebalances($account);
     $si = new AccountInfo($account);
 
 $buildstr = "";
-$buildstr = $buildstr . "<div class='transaction_item'>";
+    
+    if ($transmode === 1) {
+    $buildstr = $buildstr . "<div class='transaction_item'>";
 				$buildstr = $buildstr . "<!----------- Sub Row 1 ------------------->";
                 $dow = dayofweek($si->StartingDate);
                 $buildstr = $buildstr . "<p class='tiday'>$dow</p>";
@@ -34,24 +42,40 @@ $buildstr = $buildstr . "<div class='transaction_item'>";
 				$buildstr = $buildstr . "<p>&nbsp;</p>";
 				$buildstr = $buildstr . "<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p class='timemo'>&nbsp;</p></div>";
     
+    }
+    
 if ($si->UserTable === NULL) {
     die("<p> Please create a transactional account. </p>");
 }
 
 $usertable = $si->UserTable;
 $balance = $si->StartingBalance;
-    
 
-    
-
-    
+switch($transmode) {
+    case 2:
+        $minusdays = 30;
+        break;
+    case 3:
+        $minusdays = 60;
+        break;
+    case 4:
+        $minusdays = 90;
+        break;
+    default:
+        $minusdays = 9999;
+}
+     
 //$userdb set in noheader_secure.php
 
 if ($dbc = mysqli_connect('localhost', $mysql_user, $mysql_password)) {
     // Select database
     if (mysqli_select_db($dbc, $userdb)) {
 		
-		$query = "SELECT * FROM $usertable ORDER BY transdate, debit, credit;";
+		$query = "SELECT * FROM $usertable 
+                  WHERE (transdate BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL $minusdays DAY) AND 
+                  DATE_ADD(CURRENT_DATE(), INTERVAL 9999 DAY))
+                  ORDER BY transdate, debit, credit;";
+        
 		$result = mysqli_query($dbc, $query);
 		
 		if ($result) {
@@ -78,8 +102,8 @@ if ($dbc = mysqli_connect('localhost', $mysql_user, $mysql_password)) {
 				}
                 				
 				//Add calc here to calculate balance
-                $balance = number_format((float)$balance + (float)$row[5] - (float)$row[4],2,'.','');
-				$buildstr = $buildstr . "<p class='tibalance'>$balance</p>";
+                $balance = $row[8];
+				$buildstr = $buildstr . "<p class='tibalance'>" . number_format((float)$balance,2,'.','') . "</p>";
 				
 				$buildstr = $buildstr . "<p id='check-$transid' class='solid_box' onclick='toggle_checkmark($transid)'>" . getReadableReconcileCode($row[6]) . "</p>";
                 $buildstr = $buildstr . "<p onclick='edit($account, $transid)'>Edit</p>";

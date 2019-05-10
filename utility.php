@@ -6,6 +6,45 @@ if (session_status()==1) {
 	session_start();
 }
 
+// Active assert and make it quiet
+assert_options(ASSERT_ACTIVE, 1);
+assert_options(ASSERT_WARNING, 0);
+assert_options(ASSERT_QUIET_EVAL, 1);
+
+// Create a handler function
+function my_assert_handler($file, $line, $code, $desc = null)
+{
+    echo "Assertion failed at $file:$line: $code";
+    if ($desc) {
+        echo ": $desc";
+    }
+    echo "\n";
+}
+
+// Set up the callback
+assert_options(ASSERT_CALLBACK, 'my_assert_handler');
+
+/*
+
+Source for this function was taken from
+https://iwantsourcecodes.com/random-password-generator-in-php-source-code/
+
+*/
+
+function randCode($length = 5) {
+$ranges = array(range('a', 'z'), range('A', 'Z'), range(0, 9));
+$code = '';
+    for($i = 0; $i < $length; $i++){
+        $rkey = array_rand($ranges);
+        $vkey = array_rand($ranges[$rkey]);
+        $code .= $ranges[$rkey][$vkey];
+    }
+    
+return $code;
+    
+}
+
+
 function getuserdb() {
 	$username = $_SESSION['username'];
 	
@@ -29,6 +68,122 @@ function getuserdb() {
 }
 }
 
+function getuseremail($email) {
+
+include('mysqlnfo.php');
+
+if ($dbc = mysqli_connect('localhost', $mysql_user, $mysql_password)) {
+    // Select database
+    if (mysqli_select_db($dbc, 'MFT_DB')) {
+        
+        $query = "SELECT * FROM Users WHERE email='$email';";
+        $result = mysqli_query($dbc, $query);
+        
+        if ($result) {
+            $num_rows = mysqli_num_rows($result);
+            if ($num_rows==1) {
+                return "EXISTS";    
+            } else {
+                return "NOT PRESENT";    
+            }               
+        } else {
+            print "<p>Query unsuccessful due to MYSQL ERROR: " . mysqli_error($dbc) . "</p>";  
+        }
+    } else {
+        print "<p>Could not select database due to MYSQL ERROR: " . mysqli_error($dbc) . "</p>";
+    }
+    mysqli_close($dbc);
+} else {
+    print '<p style="color: red;">Could not connect to database server.</p>';
+}
+}
+
+function isDuplicateEmail($email) {
+    $result = getuseremail($email);
+    if ($result == "EXISTS") {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function getuser_last_logon() {
+	$username = $_SESSION['username'];
+	
+    include("mysqlnfo.php");
+    
+	if ($dbc = mysqli_connect('localhost', $mysql_user, $mysql_password)) {
+    // Select database
+        if (mysqli_select_db($dbc,"MFT_DB" )) {
+		  $query = "SELECT last_logon FROM Users WHERE username='$username';";
+            $result = mysqli_query($dbc, $query);
+		  $ll = "";
+                
+            if ($result) {
+                $row = mysqli_fetch_row($result);
+                $ll = $row[0];
+		  }
+		  mysqli_close($dbc);
+            
+        $time = strtotime($ll);
+        return date("m/d/y g:i A", $time);
+            
+        }    
+    }
+}
+
+// For Now -- Should be run when add/delete/edit transaction
+function updatebalances($account) {
+    try {
+     
+        //$userdb set in noheader_secure.php
+        include("noheader_secure.php");
+        include("mysqlnfo.php");
+        
+        $si = new AccountInfo($account);
+        $usertable = $si->UserTable;
+        $balance = $si->StartingBalance;
+
+        assert(($usertable === NULL), 'UserTable is NULL!');
+        
+        if ($dbc = mysqli_connect('localhost', $mysql_user, $mysql_password)) {
+        // Select database
+        if (mysqli_select_db($dbc, $userdb)) {
+		
+		  $query = "SELECT * FROM $usertable ORDER BY transdate, debit, credit;";
+		  $result = mysqli_query($dbc, $query);
+		
+		  if ($result) {
+                if (mysqli_num_rows($result)===0) {
+                die("<BR><p> Please add a transaction. </p>");
+            } else {
+                while($row=mysqli_fetch_array($result)) {
+				// Build Sub row 1
+                $transid=$row[0];
+                				
+				//Add calc here to calculate balance
+                $balance = number_format((float)$balance + (float)$row[5] - (float)$row[4],2,'.','');
+                    
+                $query_update_balance = "UPDATE $usertable SET Balance = $balance WHERE transaction_id=$transid;";
+			    $result2 = mysqli_query($dbc, $query_update_balance);
+                if ($result2) {
+                    //Do nothing
+                } else {
+                    print '<p style="color: red;">Could not execute query2 [utility.php - ] due to MYSQL ERROR:' . mysqli_error($dbc) . "<br>$query</p>";
+
+                }
+                }    
+            }
+		} else {
+                print '<p style="color: red;">Could not execute query [utility.php - ] due to MYSQL ERROR:' . mysqli_error($dbc) . "</p>";
+        }
+	    }
+        }
+        } catch(Exception $err) {
+            die("<p>Error: $err</p>");
+        }
+}
+    
 function createusertable() {
     include("mysqlnfo.php");
 	$usertable = "trans_T";
@@ -259,6 +414,10 @@ function getReadableReconcileCode($reconcileint) {
             return "E";
             break;
     }
+}
+
+function isMobile() {
+    return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
 }
 
 ?>

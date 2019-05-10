@@ -1,13 +1,23 @@
 <?php
-                      
-//Show login or logout
-if ($loggedin == 0) {
-    print '<o><a href="./login.html">Login</a></p>';
-} else {
-    print '<p><a href="./logout.php">Logout</a><BR>You are logged in as <strong>' . $username . '</strong></p>';
-    print '<p>Access the <a href="admin.php">Admin Page</a></p>';
-    print '<p>Access the <a href="viewmessages.php">View Messages</a></p>';
+if (session_status()==1) {
+    session_start(); 
 }
-
-            
 ?>
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Money Finance Tracker -- Test</title>
+<link href="css/desktop/layout.css" rel="stylesheet" type="text/css">
+<link href="css/mobile/layout.css" rel="stylesheet" type="text/css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<?php
+include("header_secure.php");
+include("utility.php");
+?>
+<body>
+	<h1>Money Finance Tracker -- Test</h1>
+	<p><?php echo randCode(9); ?></p>
+</body>
+</html>

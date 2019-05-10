@@ -2,13 +2,13 @@
    Money Finance Tracking
 */
 
-function loadtrans(account) {
+function loadtrans(account, mode) {
     var myurl = "https://test.moneyfinancetracking.com/loadaccounts.php";
     
     document.forms["account_form"].selected_account.value = account;
     loadDoc2(myurl, account);
     
-    var myurl = "https://test.moneyfinancetracking.com/loadtransactions.php?account=" + account;
+    var myurl = "https://test.moneyfinancetracking.com/loadtransactions.php?account=" + account + "&mode=" + mode;
    
     loadDoc(myurl);
     
@@ -84,39 +84,11 @@ function toggle_checkmark(transid) {
 }
 
 function FilterTransactions() {
-    var opt = document.getElementById("date_controls");
-    var optvalue = opt.options[opt.selectedIndex].value;
-    var trans_array = document.getElementsByClassName("transaction_item");
-    var prior_month = calc30();
+    var elem = document.getElementById("date_controls");
     
-    if (optvalue == 1) {
-        for (var i = 0; i < trans_array.length; i++) {
-            trans_array[i].classList.remove("hide");   
-        }
-        alert("Value is 1");
-    }
-    
-    if (optvalue == 2) { 
-        for (i = 0; i < trans_array.length; i++) {
-            var cn = trans_array[i].childNodes;
-            var dts = cn[9];
-            
-            try {
-                var transdt = new Date(dts.textContent);
-                if (transdt < prior_month) {
-                    trans_array[i].classList.add("hide");
-                }
-                //alert(transdt.getDay + " / " + transdt.getMonth + " / " + transdt.getFullYear);
-            } catch(err) {
-                alert("Error: Inner HTML is not a date:" + dts.innerHTML)       
-            }    
-        }    
-    alert("Value is 2");
-    }
-}
-
-function calc30() {
-    var tmpDate = new Date();
-    tmpDate.setDate(tmpDate.getDate() - 30)
-    return tmpDate;
+    var account = document.forms["account_form"].selected_account.value;
+    var mode = elem.value;
+     
+    var myurl = "https://test.moneyfinancetracking.com/loadtransactions.php?account=" + account + "&mode=" + mode;
+    loadDoc(myurl);
 }

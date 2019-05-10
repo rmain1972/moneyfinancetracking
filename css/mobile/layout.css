@@ -41,7 +41,7 @@
     .transaction_grid {
         display: grid;
         grid-template-columns: 100%;
-        grid-template-rows: 3% 7% 10% 650px 3% 1fr;
+        grid-template-rows: 11% 11% 22% 1fr 11% 11%;
     }
     
     .transaction_item {

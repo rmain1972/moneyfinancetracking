@@ -57,6 +57,7 @@ if ($dbc = mysqli_connect('localhost', $mysql_user, $mysql_password)) {
                  'credit DOUBLE NOT NULL,' . 
                  'recon_id INT NOT NULL,' .
                  'memo VARCHAR(512),' .
+                 'Balance DOUBLE,' .
                  'FOREIGN KEY (category_id) ' .
                  'REFERENCES Categories(cat_id) ' .
                  'ON DELETE CASCADE,' .

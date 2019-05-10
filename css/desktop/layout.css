@@ -6,12 +6,12 @@
     --button_bg_color: orange;
     --income_category_bg_color: green;
     --expense_category_bg_color: red;
-    --future_day_color: antiquewhite;
+    --future_day_color: darkslateblue;
     --current_day_color: green;
 }
 
 body {
-	background-color: blueviolet;
+	background-color: lightblue;
 }
 
 .main-image {
@@ -31,6 +31,12 @@ body {
 
 p {
 	font-size: 24px;
+    padding: 0;
+    margin: 0;
+}
+
+p2 {
+    font-size: 16px;
     padding: 0;
     margin: 0;
 }
@@ -59,6 +65,20 @@ h2 {
     color: red;
 }
 
+.menu_grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.menu_option {  
+    border: 1px solid black;
+    margin-top: 300px;
+    margin-bottom: 300px;
+    margin-right: 350px;
+    margin-left: 350px;
+    background-color: lightblue;
+}
+
 .accountsetup_form_grid {
     display: grid;
 	grid-template-columns: 20% 40% auto;
@@ -75,6 +95,12 @@ h2 {
 	grid-template-rows: 75px 500px 100px;
 }
 
+.print_grid {
+	display: grid;
+	grid-template-columns: 100%;
+	grid-template-rows: 10% 10% 1fr;
+}
+
 .transaction_item {
 	display: grid;
 	grid-template-columns: 15% 20% 10% 10% 10% 5% 1fr;
@@ -86,6 +112,12 @@ h2 {
 
 .transaction_item:hover {
     background-color: var(--selected_bg_color);
+}
+
+.account_grid {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 50% 50%;
 }
 
 .main_button_grid {

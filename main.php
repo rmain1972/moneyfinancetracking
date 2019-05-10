@@ -13,12 +13,14 @@ if (session_status()==1) {
 </head>
 
 <?php
-include("noheader_secure.php");    
+include("noheader_secure.php");
+include("utility.php");
 ?>
-<body onload="loadtrans(<?php echo $default_account; ?>)">
+<body onload="loadtrans(<?php echo $default_account . ', ' . $default_mode ?>)">
 <script src="js/main.js"></script>
 <form name="account_form">
 <input name="selected_account" type="hidden" value="<?php echo $default_account; ?>">
+<input name="selected_mode" type="hidden" value="<?php echo $default_mode; ?>">
 </form>
 <div class="transaction_grid">
 <!------------------------ Row 1 ------------------------------------>
@@ -46,9 +48,9 @@ include("noheader_secure.php");
 	</div>
 	</div>
 <!------------------------ Row 2 ------------------------------------>
-	<div id="accounts" class="solid_box">
-	<p id="account-1" class="account_item <?php if ($default_account==1) { echo "selected"; } ?>" onclick="loadtrans(1)">Main Account</p>
-    <p id="account-2" class="account_item <?php if ($default_account==1) { echo "selected"; } ?>" onclick="loadtrans(2)">2nd Account</p>
+	<div id="accounts" class="solid_box account_grid">
+	<p  id="account-1" class="account_item <?php if ($default_account==1) { echo "selected"; } ?>" onclick="loadtrans(1)">Main Account</p>
+    <p  id="account-2" class="account_item <?php if ($default_account==1) { echo "selected"; } ?>" onclick="loadtrans(2)">2nd Account</p>
 	</div>
     <!---------- Transactions Here ---------------------------------->
 	<div id="transactions" class="overflow">
@@ -56,16 +58,20 @@ include("noheader_secure.php");
 	</div>
 <!------------------------ Row 3 ------------------------------------>
 	<div> 
-        <select id="date_controls" onchange="FilterTransactions()">
+        <select id="date_controls" onchange='FilterTransactions()'>
             <option value="1">All Dates</option>
-            <option value="2">Last 30 Days</option>
+            <option value="2" <?php if ($default_mode==2) { echo "selected"; } ?>>Last 30 Days</option>
+            <option value="3">Last 60 Days</option>
+            <option value="4">Last 90 Days</option>
         </select>
+        <br>
+        <p2>Last Login: <?php echo $_SESSION["last_logon"]; ?></p2>
 	</div>
 	<div class="main_button_grid solid_box">
 	<p class="buttom_item" onclick="add_transaction()">Add Transaction</p>
     <p class="buttom_item" onclick="delete_account_data()">Delete Account Data</p>
-    <p class="buttom_item">Button 3</p>
-    <p class="buttom_item"><a href="accounts_setup.php">Add Account</a></p>
+    <p class="buttom_item"><a href="print.php">Print</a></p>
+    <p class="buttom_item"><a href="accounts_setup.php">Add Account</a></p></a>
     <p class="buttom_item"><a href="reconcile.php">Reconcile</a></p>
     <p class="buttom_item"><a href="logout.php">Logout</a></p>
 	</div>
