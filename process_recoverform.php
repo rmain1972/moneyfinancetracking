@@ -54,7 +54,7 @@
 
                         // Send an email:
                         $sendResult = $client->sendEmailWithTemplate(
-                            "webmaster@moneyfinancetracking.com",
+                            "no-reply@moneyfinancetracking.com",
                             "$useremail",
                             6058281,
                             [
@@ -64,7 +64,7 @@
                             "action_url" => "https://test.moneyfinancetracking.com/recover_account.php?hash=$pwhash",
                             "operating_system" => "$user_os",
                             "browser_name" => "$user_browser",
-                            "support_url" => "email:webmaster@moneyfinancetracking.com",
+                            "support_url" => "email:rmain1972@live.com",
                             "company_name" => "Rose Web Design LLC",
                             "company_address" => "21900 SE 15th St, Harrah, OK 73045",
                         ]);

@@ -18,10 +18,18 @@ session_start();
 	<div id="main-page-content_container">
 		<div class="three_fourth">
 <?php
+            
+    require_once('./vendor/autoload.php');
+    use Postmark\PostmarkClient;
+    
+    include('mysqlnfo.php');
+    include("sqlutil.php");
+    include("utility.php");        
+            
 	$username = $_POST["username"];
     $email = $_POST["email"];
-	$password = $_POST["userpassword"];
-    $pwhash = password_hash($password, PASSWORD_DEFAULT);
+	$temp_password = randCode(9);
+    $pwhash = password_hash($temp_password, PASSWORD_DEFAULT);
 	
 	print "Your username is $username";
 	print "<BR>Your email is $email";
@@ -39,8 +47,12 @@ session_start();
         die("<BR><BR>Invalid email format!  This attempt has been recorded!");  
     }
             
-include('mysqlnfo.php');
-include("sqlutil.php");
+    //TODO: Prevent Duplicate email
+    if (isDuplicateEmail($email)) {
+        header("location: duplicate_email.php?email=$email");
+        die("<p>&nbsp</p>");
+    }
+            
 
     //
 if ($dbc = mysqli_connect('localhost', $mysql_user, $mysql_password)) {
@@ -69,11 +81,37 @@ if ($dbc = mysqli_connect('localhost', $mysql_user, $mysql_password)) {
         $now = date('Y-m-d H:i:s');
         $nows = strtotime($now);
         $expire = date('Y-m-d H:i:s', strtotime('+7 days', $nows));
-        $query = "INSERT INTO Users (username, password, email, database_name, expire_date, create_date) VALUES
-        ('$username', '$pwhash', '$email', '$dbuser_db', '$expire', '$now');";
+        $query = "INSERT INTO Users (username, password, email, database_name, expire_date, create_date, change_pw) VALUES
+        ('$username', '$pwhash', '$email', '$dbuser_db', '$expire', '$now', 1);";
         
         if (mysqli_query($dbc, $query)) {
-            print "<p>Data entered successfully into the database.</p>";
+             $client = new PostmarkClient("f1d91cb7-b9b9-417f-8b9c-a687f5df9356");
+
+            // Send an email:
+            $sendResult = $client->sendEmailWithTemplate(
+            "noreply@moneyfinancetracking.com",
+            "$email",
+            11487713,
+            [
+                "product_name" => "Money Finance Tracking dot com",
+                "name" => "$username",
+                "product_url" => "https://test.moneyfinancetracking.com",
+                "action_url" => "https://test.moneyfinancetracking.com/activate_account.php?username=$username",
+                "login_url" => "https://test.moneyfinancetracking.com/login.html",
+                "username" => "$username",
+                "activate_code" => "$temp_password",
+                "trial_length" => "7 days",
+                "trial_start_date" => "$now",
+                "trial_end_date" => "$expire",
+                "support_email" => "rmain1972@live.com",
+                "sender_name" => "MFT Webmaster",
+                "help_url" => "https://test.moneyfinancetracking.com/help.php",
+                "company_name" => "Rose Web Design LLC",
+                "company_address" => "21900 SE 15th St, Harrah OK 73045",
+                "live_chat_url" => "https://error.html",
+            ]);
+            
+            print "<p>Activation code and instructions sent to your email.  Please check your email.</p>";
             
             $to = "rmain1972@live.com";
             $subject = "User Added";
@@ -185,7 +223,6 @@ if ($dbc = mysqli_connect('localhost', $mysql_user, $mysql_password)) {
         print "<p>Could not select database due to MYSQL ERROR: " . mysqli_error($dbc) . "</p>";
     }
     mysqli_close($dbc);
-    print "<p>Please <a href='login.html'>login.</a></[p>]";
 } else {
     print '<p style="color: red;">Could not connect to database server.</p>';
 }
