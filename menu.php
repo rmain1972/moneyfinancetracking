@@ -23,6 +23,10 @@ include("utility.php");
     <div class="menu_option"><a href="main.php">Open Ledgers</a></div>
     <!-- Option 2 -- Edit Catagories -->
     <div class="menu_option"><a href="editcats.php">Edit Categories</a></div>
+    <!-- Option 3 -- change Password -->
+    <div class="menu_option"><a href="change_password.php?username=<?php echo $_SESSION["username"]; ?>">Change Password</a></div>
+    <!-- Option 4 -- Delete User Account -->
+    <div class="menu_option"><a href="delete_user_account.php">Delete User Account</a></div>
     </div>
 </body>
 </html>

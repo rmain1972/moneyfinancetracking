@@ -72,11 +72,10 @@ h2 {
 
 .menu_option {  
     border: 1px solid black;
-    margin-top: 300px;
-    margin-bottom: 300px;
-    margin-right: 350px;
-    margin-left: 350px;
-    background-color: lightblue;
+    padding-top: 75px;
+    padding-bottom: 75px;
+    padding-left: 300px;
+    background-color: lightseagreen;
 }
 
 .accountsetup_form_grid {
@@ -89,10 +88,35 @@ h2 {
 	grid-template-columns: 1fr 1fr 1fr;
 }
 
+/* 1366 x 768 */
+@media only screen 
+and (min-width : 1224px){
+  .transaction_grid {
+	display: grid;
+	grid-template-columns: 20% 80%;
+	grid-template-rows: 72pt 325pt 1fr;
+}
+}
+
+/* 1366 x 768 */
+@media only screen 
+and (min-width : 1224px)
+and (resolution: 120dpi){
 .transaction_grid {
 	display: grid;
 	grid-template-columns: 20% 80%;
-	grid-template-rows: 75px 500px 100px;
+	grid-template-rows: 72pt 432pt 1fr;
+}
+}
+
+/* 22" Screen */
+@media only screen 
+and (min-width : 1824px) {
+    .transaction_grid {
+	display: grid;
+	grid-template-columns: 20% 80%;
+	grid-template-rows: 72pt 576pt 1fr;
+}
 }
 
 .print_grid {
@@ -117,7 +141,7 @@ h2 {
 .account_grid {
     display: grid;
     grid-template-columns: 100%;
-    grid-template-rows: 50% 50%;
+    grid-template-rows: 33% 33% 1fr;
 }
 
 .main_button_grid {
